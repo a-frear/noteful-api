@@ -12,7 +12,7 @@ const db = knex({
       password : password,
       ssl: true
     }
-  });
+  })
 
   app.set('db', db)
 
