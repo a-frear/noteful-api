@@ -106,11 +106,12 @@ describe('Notes Endpoints', function() {
         })
     })
 
-    describe(`POST /api/notes`, () => {
+    describe.only(`POST /api/notes`, () => {
         it(`creates a note and responds with 201 and the new note`, () => {
             this.retries(3)
             const newNote = {
               name: 'Test new note',
+              folder_id: 1,
               content: 'Test new note content...'
             }
             return supertest(app)
@@ -120,6 +121,7 @@ describe('Notes Endpoints', function() {
                 .expect(res => {
                     expect(res.body.name).to.eql(newNote.name)
                     expect(res.body.content).to.eql(newNote.content)
+                    expect(res.body.folder_id).to.eql(newNote.folder_id)
                     expect(res.body).to.have.property('id')
                     expect(res.headers.location).to.eql(`/api/notes/${res.body.id}`)
                     const expected = new Date().toLocaleString()
@@ -133,11 +135,12 @@ describe('Notes Endpoints', function() {
                     )
         })
 
-        const requiredFields = ['name', 'content']
+        const requiredFields = ['name', 'folder_id', 'content']
 
         requiredFields.forEach(field => {
           const newNote = {
             name: 'Test new note',
+            folder_id: 1,
             content: 'Test new note content...'
           }
     

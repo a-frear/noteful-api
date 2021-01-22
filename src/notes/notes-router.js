@@ -25,8 +25,9 @@ notesRouter
             //passing next into the .catch from the promise chain so that any errors get handled by our error handler middleware.
       })
       .post(jsonParser, (req, res, next) => {
-        const { name, content } = req.body
-        const newNote = { name, content }
+        const { name, folder_id, content } = req.body
+        const newNote = { name, folder_id, content }
+        console.log(newNote)
 
         for (const [key, value] of Object.entries(newNote))
         if (value == null)
