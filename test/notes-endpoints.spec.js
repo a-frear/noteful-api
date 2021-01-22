@@ -52,11 +52,17 @@ describe('Notes Endpoints', function() {
     })
     context(`Given an XSS attack note`, () => {
         const { maliciousNote, expectedNote } = makeMaliciousNote()
-  
-        beforeEach('insert malicious note', () => {
-              return db
-                .into('notes')
-                .insert([ maliciousNote ])
+        const testFolders = makeFoldersArray()
+   
+        beforeEach('insert malciious note', () => {
+            return db
+                .into('folders')
+                .insert(testFolders)
+                .then(() => {
+                    return db
+                    .into('notes')
+                    .insert([maliciousNote])
+                })
         })
   
         it('removes XSS attack content', () => {
@@ -106,7 +112,15 @@ describe('Notes Endpoints', function() {
         })
     })
 
-    describe.only(`POST /api/notes`, () => {
+    describe(`POST /api/notes`, () => {
+      const testFolders = makeFoldersArray()
+ 
+      beforeEach('insert folders', () => {
+          return db
+              .into('folders')
+              .insert(testFolders)
+      })
+        
         it(`creates a note and responds with 201 and the new note`, () => {
             this.retries(3)
             const newNote = {
